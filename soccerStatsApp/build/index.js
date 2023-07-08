@@ -1,17 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const CsvFileReader_1 = require("./CsvFileReader");
-const MatchResult_1 = require("./MatchResult");
-const reader = new CsvFileReader_1.CsvFileReader("football.csv");
-reader.readFile();
-console.log(reader.data[0]);
-let manUnitedWins = 0;
-for (let match of reader.data) {
-    if (match[1] === "Man United" && match[5] === MatchResult_1.MatchResult.HomeWin) {
-        manUnitedWins++;
-    }
-    else if (match[2] === "Man United" && match[5] === MatchResult_1.MatchResult.AwayWin) {
-        manUnitedWins++;
-    }
-}
-console.log(manUnitedWins);
+const MatchReader_1 = require("./MatchReader");
+const Summary_1 = require("./Summary");
+const WinsAnalysis_1 = require("./analyzers/WinsAnalysis");
+const HtmlReport_1 = require("./reports/HtmlReport");
+const csvFileReader = new CsvFileReader_1.CsvFileReader("football.csv");
+// passing generic reusable class, class is an Object
+// note - matchReader class has access to loadFile method of another class
+const matchReader = new MatchReader_1.MatchReader(csvFileReader);
+matchReader.loadFile();
+const summary = new Summary_1.Summary(new WinsAnalysis_1.WinsAnalysis("Man United"), new HtmlReport_1.HtmlReport());
+summary.buildAndPrintReport(matchReader.matches);

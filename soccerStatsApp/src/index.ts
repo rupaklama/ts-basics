@@ -1,19 +1,17 @@
 import { CsvFileReader } from "./CsvFileReader";
-import { MatchResult } from "./MatchResult";
+import { MatchReader } from "./MatchReader";
+import { Summary } from "./Summary";
+import { WinsAnalysis } from "./analyzers/WinsAnalysis";
 
-const reader = new CsvFileReader("football.csv");
-reader.readFile();
+import { HtmlReport } from "./reports/HtmlReport";
 
-console.log(reader.data[0]);
+const csvFileReader = new CsvFileReader("football.csv");
 
-let manUnitedWins = 0;
+// passing generic reusable class, class is an Object
+// note - matchReader class has access to loadFile method of another class
+const matchReader = new MatchReader(csvFileReader);
+matchReader.loadFile();
 
-for (let match of reader.data) {
-  if (match[1] === "Man United" && match[5] === MatchResult.HomeWin) {
-    manUnitedWins++;
-  } else if (match[2] === "Man United" && match[5] === MatchResult.AwayWin) {
-    manUnitedWins++;
-  }
-}
+const summary = new Summary(new WinsAnalysis("Man United"), new HtmlReport());
 
-console.log(manUnitedWins);
+summary.buildAndPrintReport(matchReader.matches);
