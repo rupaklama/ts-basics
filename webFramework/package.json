@@ -1,0 +1,22 @@
+{
+  "name": "webFramework",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:parcel": "npx parcel index.html",
+    "start:db": "json-server -w db.json",
+    "start": "concurrently npm:start:*"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "buffer": "^6.0.3",
+    "concurrently": "^8.2.0",
+    "json-server": "^0.17.3"
+  },
+  "dependencies": {
+    "axios": "^1.4.0"
+  }
+}
